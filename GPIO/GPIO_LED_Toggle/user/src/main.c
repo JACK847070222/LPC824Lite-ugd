@@ -38,16 +38,14 @@
 
 int main(void) 
 {
-//    uint32_t i;
     SysTickInit();
     GPIOInit();     
     Init_LEDs();
 
-//	SystemCoreClockUpdate ();
-//    i = SystemCoreClock;
+
     while(1) 
     {
-        
+
     } // end of while(1)
 	
 } // end of main
@@ -63,13 +61,13 @@ int main(void)
 *****************************************************************************/
 void Setup_LPC8xx_Low_Power() 
 {
-	// Configure PDAWAKECFG
-	LPC_SYSCON->PDAWAKECFG = LPC_SYSCON->PDRUNCFG;
+    // Configure PDAWAKECFG
+    LPC_SYSCON->PDAWAKECFG = LPC_SYSCON->PDRUNCFG;
 
-	// Turn clocks off to unused peripherals
-	LPC_SYSCON->SYSAHBCLKCTRL &= ~(SWM | GPIO | IOCON);
+    // Turn clocks off to unused peripherals
+    LPC_SYSCON->SYSAHBCLKCTRL &= ~(SWM | GPIO | IOCON);
 
-	return;
+    return;
 }
 
 /*****************************************************************************
@@ -83,17 +81,17 @@ void Setup_LPC8xx_Low_Power()
 *****************************************************************************/
 void IRC_Only_SystemInit(void) 
 {
-	LPC_SYSCON->SYSPLLCLKSEL  = 0;                  // Selects IRC as input to the PLL which we won't be using
-	LPC_SYSCON->SYSPLLCLKUEN  = 0;
-	LPC_SYSCON->SYSPLLCLKUEN  = 1;                  // Update Clock Source
-	while (!(LPC_SYSCON->SYSPLLCLKUEN & 0x01));     // Wait Until Updated
+    LPC_SYSCON->SYSPLLCLKSEL  = 0;                  // Selects IRC as input to the PLL which we won't be using
+    LPC_SYSCON->SYSPLLCLKUEN  = 0;
+    LPC_SYSCON->SYSPLLCLKUEN  = 1;                  // Update Clock Source
+    while (!(LPC_SYSCON->SYSPLLCLKUEN & 0x01));     // Wait Until Updated
 
-	LPC_SYSCON->MAINCLKSEL    = 0;                  // Select IRC as input to main clock select mux
-	LPC_SYSCON->MAINCLKUEN    = 0;
-	LPC_SYSCON->MAINCLKUEN    = 1;                  // Update MCLK Clock Source
-	while (!(LPC_SYSCON->MAINCLKUEN & 0x01));       // Wait Until Updated
+    LPC_SYSCON->MAINCLKSEL    = 0;                  // Select IRC as input to main clock select mux
+    LPC_SYSCON->MAINCLKUEN    = 0;
+    LPC_SYSCON->MAINCLKUEN    = 1;                  // Update MCLK Clock Source
+    while (!(LPC_SYSCON->MAINCLKUEN & 0x01));       // Wait Until Updated
 
-	LPC_SYSCON->SYSAHBCLKDIV  = 1;                  // System clock = main clock div-by-1
+    LPC_SYSCON->SYSAHBCLKDIV  = 1;                  // System clock = main clock div-by-1
 
-	LPC_FLASHCTRL->FLASHCFG = 0;                    // FLASH access time is always 1 system clock
+    LPC_FLASHCTRL->FLASHCFG = 0;                    // FLASH access time is always 1 system clock
 }
